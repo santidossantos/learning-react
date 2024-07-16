@@ -1,20 +1,17 @@
 import './App.css'
 
-function App() {
-
+function App () {
   return (
     <div className='page'>
-     <header>
+      <header>
         <h1>Buscador de Películas</h1>
         <form className='form'>
-          <input type="text" placeholder='Avengers, Star Wars...' />
+          <input type='text' placeholder='Avengers, Star Wars...' />
           <button type='submit'>Buscar</button>
         </form>
-     </header>
+      </header>
 
-    <main>
-
-    </main>
+      <main />
 
     </div>
   )
