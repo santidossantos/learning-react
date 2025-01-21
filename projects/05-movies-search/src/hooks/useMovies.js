@@ -9,7 +9,7 @@
   devolver el loading, error, etc. 
   que se necesite para mostrar en el App
 */
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { searchMovies } from "../services/movies";
 
 export function useMovies({ search, sort }) {
@@ -32,9 +32,12 @@ export function useMovies({ search, sort }) {
     }
   };
 
-  const sortedMovies = sort
-    ? [...movies].sort((a, b) => a.title.localeCompare(b.title)) // Hacemos una copia para no mutar el estado
-    : movies; // En algunos idiomas, los acentos pueden influir en el orden de las letras.
+  const sortedMovies = useMemo(() => {
+    console.log("sort", sort);
+    return sort
+      ? [...movies].sort((a, b) => a.title.localeCompare(b.title)) // Hacemos una copia para no mutar el estado
+      : movies; // En algunos idiomas, los acentos pueden influir en el orden de las letras.
+  }, [sort, movies]); // Dependencias para recalcular el orden cuando cambian
 
   return { movies: sortedMovies, getMovies, loading };
 }

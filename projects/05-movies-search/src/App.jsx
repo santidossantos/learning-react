@@ -35,6 +35,7 @@ function App() {
             checked={sort}
             onChange={() => setSort(!sort)}
           />
+
           <button type="submit">Buscar</button>
         </form>
         {error && <p className="error">{error}</p>}
