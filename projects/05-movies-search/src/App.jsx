@@ -4,12 +4,12 @@ import { useMovies } from "./hooks/useMovies";
 import { useSearch } from "./hooks/useSearch";
 
 function App() {
-  const { movies } = useMovies();
   const { search, updateSearch, error } = useSearch();
+  const { movies, getMovies, loading } = useMovies({ search });
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ search });
+    getMovies();
   };
 
   const handleChange = (event) => {
@@ -30,6 +30,7 @@ function App() {
           <button type="submit">Buscar</button>
         </form>
         {error && <p className="error">{error}</p>}
+        {loading && <p className="loading">Cargando...</p>}
       </header>
 
       <main>
