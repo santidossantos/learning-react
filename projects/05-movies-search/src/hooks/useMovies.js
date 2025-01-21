@@ -23,6 +23,7 @@ export function useMovies({ search }) {
     try {
       setLoading(true);
       const movies = await searchMovies({ search });
+      previousSearch.current = search; // Actualiza el search anterior
       setMovies(movies);
     } catch (error) {
       console.error(error);
