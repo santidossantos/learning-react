@@ -23,9 +23,9 @@
 
 function ListMovies ({ movies }) {
   return (
-    <ul>
+    <ul className="movies">
       {movies.map((movie) => (
-        <li key={movie.id}>
+        <li className="movie" key={movie.id}>
           <h2>{movie.title}</h2>
           <p>{movie.year}</p>
           <img src={movie.poster} alt={movie.title} />
@@ -44,6 +44,9 @@ function NoResults () {
 export function Movies ({ movies }) {
   const hasMovies = movies?.length > 0
 
+  /* Esta bueno hacer la logica del ternario aca
+   para no tener que manejarlo en el App 
+   */
   return (
     <main>
       {hasMovies
