@@ -12,7 +12,7 @@
 import { useRef, useState } from "react";
 import { searchMovies } from "../services/movies";
 
-export function useMovies({ search }) {
+export function useMovies({ search, sort }) {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const previousSearch = useRef(search); // Guarda el search anterior (usamos useRef porque el valor se mantiene entre renders)
@@ -32,5 +32,9 @@ export function useMovies({ search }) {
     }
   };
 
-  return { movies, getMovies, loading };
+  const sortedMovies = sort
+    ? [...movies].sort((a, b) => a.title.localeCompare(b.title)) // Hacemos una copia para no mutar el estado
+    : movies; // En algunos idiomas, los acentos pueden influir en el orden de las letras.
+
+  return { movies: sortedMovies, getMovies, loading };
 }
