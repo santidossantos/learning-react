@@ -1,6 +1,6 @@
 import "./App.css";
 import { Movies } from "./components/Movies";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMovies } from "./hooks/useMovies";
 import { useSearch } from "./hooks/useSearch";
 
@@ -11,12 +11,20 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    getMovies();
+    getMovies({ search });
   };
 
   const handleChange = (event) => {
     updateSearch(event.target.value);
   };
+
+  /* Este useEffect lo utilizamos para ver que se esta creando la funcion getMovies
+    Cada vez que escribimos en el input, se recrea la funcion getMovies
+    Con use memo lo solucionamos 
+  */
+  useEffect(() => {
+    console.log("Se crea la funcion getMovies");
+  }, [getMovies]);
 
   return (
     <div className="page">

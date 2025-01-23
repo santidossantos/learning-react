@@ -17,23 +17,24 @@ export function useMovies({ search, sort }) {
   const [loading, setLoading] = useState(false);
   const previousSearch = useRef(search); // Guarda el search anterior (usamos useRef porque el valor se mantiene entre renders)
 
-  const getMovies = async () => {
-    if (search == previousSearch.current) return; // Evita la llamada a la API si el search no cambió
+  const getMovies = useMemo(() => {
+    return async ({ search }) => { // Inyectamos el parametro search
+      if (search == previousSearch.current) return; // Evita la llamada a la API si el search no cambió
 
-    try {
-      setLoading(true);
-      const movies = await searchMovies({ search });
-      previousSearch.current = search; // Actualiza el search anterior
-      setMovies(movies);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        setLoading(true);
+        const movies = await searchMovies({ search });
+        previousSearch.current = search; // Actualiza el search anterior
+        setMovies(movies);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  }, []); // Dependencia vacia porque la funcion solo se debe crear una vez
 
   const sortedMovies = useMemo(() => {
-    console.log("sort", sort);
     return sort
       ? [...movies].sort((a, b) => a.title.localeCompare(b.title)) // Hacemos una copia para no mutar el estado
       : movies; // En algunos idiomas, los acentos pueden influir en el orden de las letras.
