@@ -9,7 +9,7 @@
   devolver el loading, error, etc. 
   que se necesite para mostrar en el App
 */
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { searchMovies } from "../services/movies";
 
 export function useMovies({ search, sort }) {
@@ -17,21 +17,20 @@ export function useMovies({ search, sort }) {
   const [loading, setLoading] = useState(false);
   const previousSearch = useRef(search); // Guarda el search anterior (usamos useRef porque el valor se mantiene entre renders)
 
-  const getMovies = useMemo(() => {
-    return async ({ search }) => { // Inyectamos el parametro search
-      if (search == previousSearch.current) return; // Evita la llamada a la API si el search no cambió
+  const getMovies = useCallback(async ({ search }) => {
+    // Inyectamos el parametro search
+    if (search == previousSearch.current) return; // Evita la llamada a la API si el search no cambió
 
-      try {
-        setLoading(true);
-        const movies = await searchMovies({ search });
-        previousSearch.current = search; // Actualiza el search anterior
-        setMovies(movies);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    try {
+      setLoading(true);
+      const movies = await searchMovies({ search });
+      previousSearch.current = search; // Actualiza el search anterior
+      setMovies(movies);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }, []); // Dependencia vacia porque la funcion solo se debe crear una vez
 
   const sortedMovies = useMemo(() => {
